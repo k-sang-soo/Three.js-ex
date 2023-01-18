@@ -1,7 +1,7 @@
-import * as THREE from '../node_modules/three/build/three.module.js';
-import * as dat from '../node_modules/dat.gui/build/dat.gui.module.js';
+import * as THREE from 'three';
+import * as dat from 'dat.gui';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { info } from './info.js';
-import { OrbitControls } from '../node_modules/three/examples/jsm/controls/OrbitControls.js';
 
 // Debug
 const gui = new dat.GUI();
@@ -14,7 +14,7 @@ const scene = new THREE.Scene();
 
 // texture
 const textureLoader = new THREE.TextureLoader();
-const normalTexture = textureLoader.load('./src/img/NormalMap.png');
+const normalTexture = textureLoader.load('./static/img/NormalMap.png');
 
 // Objects
 const geometry = new THREE.SphereBufferGeometry(1, 64, 64);

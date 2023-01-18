@@ -1,6 +1,6 @@
-import * as THREE from '../node_modules/three/build/three.module.js';
-import {info} from './info.js'
-import { OrbitControls } from "../node_modules/three/examples/jsm/controls/OrbitControls.js"
+import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { info } from './info.js';
 
 info.render();
 
@@ -16,10 +16,14 @@ scene.background = new THREE.Color(FogColor);
 scene.fog = new THREE.FogExp2(FogColor, 0.3); // scene에 전체적으로 적용
 
 // 카메라
-const camera = new THREE.PerspectiveCamera(75, info.winW / info.winH, 0.1, 1000);
+const camera = new THREE.PerspectiveCamera(
+    75,
+    info.winW / info.winH,
+    0.1,
+    1000,
+);
 camera.position.set(0, 2, 3);
 camera.lookAt(new THREE.Vector3(0, 0.5, 0));
-
 
 // 캔버스
 const canvas = document.querySelector('#canvas');
@@ -27,7 +31,7 @@ const canvas = document.querySelector('#canvas');
 // 렌더러
 const renderer = new THREE.WebGLRenderer({
     canvas,
-    antialias: true
+    antialias: true,
 });
 renderer.setSize(info.winW, info.winH);
 
@@ -41,7 +45,7 @@ controls.update();
 renderer.shadowMap.enabled = true;
 
 // 빛
-const pointLight = new THREE.PointLight(0xFFFFFF, 0.8);
+const pointLight = new THREE.PointLight(0xffffff, 0.8);
 const pointLightHelper = new THREE.PointLightHelper(pointLight, 0.2, '#000');
 pointLight.position.set(0, 2, 1);
 scene.add(pointLightHelper);
@@ -54,7 +58,7 @@ pointLight.shadow.radius = 4;
 //바닥
 const planeGeometry = new THREE.PlaneGeometry(30, 30, 1, 1);
 const planeMaterial = new THREE.MeshStandardMaterial({
-   color: ObjColor
+    color: ObjColor,
 });
 const plane = new THREE.Mesh(planeGeometry, planeMaterial);
 plane.rotation.x = -0.5 * Math.PI;
@@ -67,7 +71,7 @@ const geometry = new THREE.TorusGeometry(0.3, 0.15, 16, 40);
 
 //MeshStandardMaterial 재질은 기본적인 재질
 const material = new THREE.MeshStandardMaterial({
-    color: 0xFF7F00,
+    color: 0xff7f00,
     metalness: 0.2, //돌이나 나무는 0, 메탈릭한 부분들은 1 로 표현
     roughness: 0.1, // 거칠기
     // transparent: true, // true로 해야 모든 색에서 opacity 0 이 됐을 때 보이지 않는다.

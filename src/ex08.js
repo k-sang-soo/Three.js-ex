@@ -1,7 +1,7 @@
-import * as THREE from '../node_modules/three/build/three.module.js';
-import { FontLoader } from '../node_modules/three/examples/jsm/loaders/FontLoader.js';
+import * as THREE from 'three';
+import { FontLoader } from 'three/src/loaders/FontLoader';
+import { TextGeometry } from 'three/src/geometries/TextGeometry';
 import { info } from './info.js';
-import { TextGeometry } from '../node_modules/three/examples/jsm/geometries/TextGeometry.js';
 
 info.render();
 
@@ -39,7 +39,7 @@ const obj01 = new THREE.Mesh(geometry01, material01);
 scene.add(obj01);
 
 const loader = new FontLoader();
-loader.load('../../src/font/Poppins_Regular.json', (font) => {
+loader.load('../../static/font/Poppins_Regular.json', (font) => {
     const geometry = new TextGeometry('Spade Company', {
         font: font,
         size: 100,

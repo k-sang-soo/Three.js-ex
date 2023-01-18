@@ -1,5 +1,5 @@
-import * as THREE from '../node_modules/three/build/three.module.js';
-import {info} from './info.js'
+import * as THREE from 'three';
+import { info } from './info.js';
 
 info.render();
 
@@ -22,22 +22,30 @@ const canvas = document.querySelector('#canvas');
 // 렌더러
 const renderer = new THREE.WebGLRenderer({
     canvas,
-    antialias: true
+    antialias: true,
 });
 renderer.setSize(info.winW, info.winH);
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
 // 빛
-const pointLight = new THREE.PointLight(0xFFFFFF, 1);
+const pointLight = new THREE.PointLight(0xffffff, 1);
 pointLight.position.set(0, 2, 12);
 scene.add(pointLight);
 
 // 텍스처
 const textureLoader = new THREE.TextureLoader();
-const textureBaseColor = textureLoader.load('./src/img/aerial_rocks_02_diff_4k.jpg');
-const textureNormalColor = textureLoader.load('./src/img/aerial_rocks_02_nor_gl_4k.jpg');
-const textureDispMap = textureLoader.load('./src/img/aerial_rocks_02_disp_4k.png');
-const textureRoughMap = textureLoader.load('./src/img/aerial_rocks_02_rough_4k.jpg');
+const textureBaseColor = textureLoader.load(
+    './static/img/aerial_rocks_02_diff_4k.jpg',
+);
+const textureNormalColor = textureLoader.load(
+    './static/img/aerial_rocks_02_nor_gl_4k.jpg',
+);
+const textureDispMap = textureLoader.load(
+    './static/img/aerial_rocks_02_disp_4k.png',
+);
+const textureRoughMap = textureLoader.load(
+    './static/img/aerial_rocks_02_rough_4k.jpg',
+);
 renderer.outputEncoding = THREE.sRGBEncoding;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.25;
@@ -45,7 +53,7 @@ renderer.toneMappingExposure = 1.25;
 // 매쉬
 const geometry = new THREE.SphereGeometry(0.3, 32, 16);
 const material01 = new THREE.MeshStandardMaterial({
-    map: textureBaseColor
+    map: textureBaseColor,
 });
 // 프로퍼티들은 밖에서도 사용 가능
 const obj01 = new THREE.Mesh(geometry, material01);
@@ -102,7 +110,7 @@ function render(time) {
     // obj03.rotation.y = time;
     // obj04.rotation.y = time;
     renderer.render(scene, camera);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     requestAnimationFrame(render);
 }
 
@@ -113,7 +121,7 @@ function canvasResize() {
     camera.aspect = info.winW / info.winH; // 종횡비
     camera.updateProjectionMatrix();
     renderer.setSize(info.winW, info.winH);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.render(scene, camera);
 }
 

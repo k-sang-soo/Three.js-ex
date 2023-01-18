@@ -1,7 +1,7 @@
-import * as THREE from '../node_modules/three/build/three.module.js';
-import { FontLoader } from '../node_modules/three/examples/jsm/loaders/FontLoader.js';
+import * as THREE from 'three';
+import { FontLoader } from 'three/src/loaders/FontLoader';
 import { info } from './info.js';
-import { TextGeometry } from '../node_modules/three/examples/jsm/geometries/TextGeometry.js';
+import { TextGeometry } from 'three/src/geometries/TextGeometry';
 
 info.render();
 
@@ -21,6 +21,8 @@ camera.position.x = farDist * -2;
 camera.position.z = 500;
 scene.add(camera);
 
+console.log('farDist * -2', farDist * -2);
+
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas,
     antialias: true,
@@ -31,8 +33,12 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.setClearColor('#4dd0E1');
 
 const cubeSize = 120;
-const geometry = new THREE.BoxBufferGeometry(cubeSize, cubeSize, cubeSize);
+const geometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
 const material = new THREE.MeshNormalMaterial();
+
+//scene 가운데를 표시
+const axesHelper = new THREE.AxesHelper(5000);
+scene.add(axesHelper);
 
 const group = new THREE.Group();
 for (let i = 0; i < 350; i++) {
@@ -41,7 +47,7 @@ for (let i = 0; i < 350; i++) {
     const distDouble = dist * 2; // 6,666.666
     const tau = 2 * Math.PI;
 
-    mesh.position.x = Math.random() * distDouble - dist;
+    mesh.position.x = Math.random() * distDouble - dist; // -3,333.333 ~ 3,333.333
     mesh.position.y = Math.random() * distDouble - dist;
     mesh.position.z = Math.random() * distDouble - dist;
 
@@ -55,7 +61,6 @@ for (let i = 0; i < 350; i++) {
     mesh.updateMatrix();
 
     group.add(mesh);
-    console.log(' mesh.position.x', mesh.position.x);
 }
 scene.add(group);
 
@@ -78,7 +83,7 @@ const createTypo = (font) => {
     const text = new TextGeometry(word, typoProperties);
     textMesh.geometry = text;
     textMesh.material = material;
-    textMesh.position.x = cubeSize * 2;
+    textMesh.position.x = -cubeSize * 2;
     textMesh.position.z = cubeSize * 2;
     scene.add(textMesh);
 };
@@ -93,6 +98,7 @@ const mouseFX = {
     windowHalfX: info.winW / 2,
     windowHalfY: info.winH / 2,
     coordinates: function (coordX, coordY) {
+        // mouseX : -6600 ~ 6600
         mouseX = (coordX - mouseFX.windowHalfX) * 10;
         mouseY = (coordY - mouseFX.windowHalfY) * 10;
     },
@@ -124,8 +130,9 @@ window.addEventListener('resize', () => {
 
 function render() {
     requestAnimationFrame(render);
-    camera.position.x -= (mouseX - camera.position.x) * 0.05;
-    camera.position.y += (mouseY - camera.position.y) * 0.05;
+    // camera.position.x : -6600 ~ 6600
+    camera.position.x += (mouseX - camera.position.x) * 0.05;
+    camera.position.y += (mouseY * -1 - camera.position.y) * 0.05;
     camera.lookAt(scene.position);
 
     const t = Date.now() * 0.001;

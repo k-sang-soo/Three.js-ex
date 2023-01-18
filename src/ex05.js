@@ -1,6 +1,6 @@
-import * as THREE from '../node_modules/three/build/three.module.js';
-import {info} from './info.js'
-import { OrbitControls } from "../node_modules/three/examples/jsm/controls/OrbitControls.js"
+import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { info } from './info.js';
 
 info.render();
 
@@ -20,10 +20,14 @@ const axesHelper = new THREE.AxesHelper(50);
 scene.add(axesHelper);
 
 // 카메라
-const camera = new THREE.PerspectiveCamera(75, info.winW / info.winH, 0.1, 4000);
+const camera = new THREE.PerspectiveCamera(
+    75,
+    info.winW / info.winH,
+    0.1,
+    4000,
+);
 camera.position.set(0, 20, 100);
 camera.lookAt(new THREE.Vector3(0, 0, 0));
-
 
 // 캔버스
 const canvas = document.querySelector('#canvas');
@@ -32,7 +36,7 @@ const canvas = document.querySelector('#canvas');
 const renderer = new THREE.WebGLRenderer({
     canvas,
     alpha: true,
-    antialias: true
+    antialias: true,
 });
 renderer.setSize(info.winW, info.winH);
 
@@ -43,49 +47,49 @@ controls.maxDistance = 800;
 controls.update();
 
 const skyMaterialArray = [];
-const texture_ft = new THREE.TextureLoader().load('../src/img/bay_ft.jpg');
-const texture_bk = new THREE.TextureLoader().load('../src/img/bay_bk.jpg');
-const texture_up = new THREE.TextureLoader().load('../src/img/bay_up.jpg');
-const texture_dn = new THREE.TextureLoader().load('../src/img/bay_dn.jpg');
-const texture_rt = new THREE.TextureLoader().load('../src/img/bay_rt.jpg');
-const texture_lf = new THREE.TextureLoader().load('../src/img/bay_lf.jpg');
+const texture_ft = new THREE.TextureLoader().load('../static/img/bay_ft.jpg');
+const texture_bk = new THREE.TextureLoader().load('../static/img/bay_bk.jpg');
+const texture_up = new THREE.TextureLoader().load('../static/img/bay_up.jpg');
+const texture_dn = new THREE.TextureLoader().load('../static/img/bay_dn.jpg');
+const texture_rt = new THREE.TextureLoader().load('../static/img/bay_rt.jpg');
+const texture_lf = new THREE.TextureLoader().load('../static/img/bay_lf.jpg');
 skyMaterialArray.push(
     new THREE.MeshStandardMaterial({
         map: texture_ft,
-    })
-)
+    }),
+);
 skyMaterialArray.push(
     new THREE.MeshStandardMaterial({
         map: texture_bk,
-    })
-)
+    }),
+);
 skyMaterialArray.push(
     new THREE.MeshStandardMaterial({
         map: texture_up,
-    })
-)
+    }),
+);
 skyMaterialArray.push(
     new THREE.MeshStandardMaterial({
         map: texture_dn,
-    })
-)
+    }),
+);
 skyMaterialArray.push(
     new THREE.MeshStandardMaterial({
         map: texture_rt,
-    })
-)
+    }),
+);
 skyMaterialArray.push(
     new THREE.MeshStandardMaterial({
         map: texture_lf,
-    })
-)
+    }),
+);
 
-for(let i = 0; i < 6; i++) {
+for (let i = 0; i < 6; i++) {
     skyMaterialArray[i].side = THREE.BackSide;
 }
 
 // 빛
-const ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.8);
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
 scene.add(ambientLight);
 
 //바닥
