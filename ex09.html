@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" href="src/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    html,
+    body {
+      font-family: 'Poppins', sans-serif;
+      overflow-x: hidden;
+    }
+
+    html {
+      scroll-snap-type: y mandatory;
+    }
+
+    body {
+      background-color: #ffc0cb;
+    }
+
+    section {
+      width: 100vw;
+      height: 100vh;
+      scroll-snap-align: start;
+      position: relative;
+    }
+
+    section .container {
+      max-width: 1360px;
+      width: 100%;
+      height: 100%;
+      margin: 0 auto;
+      padding: 0 15px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    section.one .container {
+      grid-template-areas: 'content ..';
+    }
+
+    section.two .container {
+      grid-template-areas: '.. content';
+    }
+
+    .hero {
+      width: 100%;
+      height: 100%;
+      margin-bottom: 50px;
+      grid-area: content;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    h1 {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 90px;
+      line-height: 100px;
+      font-weight: 700;
+      width: 100%;
+      height: 100px;
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 60px;
+      font-weight: 600;
+      line-height: 70px;
+      display: block;
+      width: 100%;
+      font-family: inherit;
+    }
+
+    h2 span {
+      font-size: 50px;
+      display: block;
+      line-height: 60px;
+      width: 100%;
+      font-weight: 400;
+      margin-bottom: 30px;
+    }
+
+    p {
+      font-size: 16px;
+      line-height: 26px;
+      font-weight: 300;
+      width: 100%;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <canvas class="webgl"></canvas>
+  <section class="one">
+    <div class="container">
+      <div class="hero">
+        <h2>Abs are Cool. <span>But have you ever tried donuts?</span></h2>
+        <p>
+          Lorem Ipsum is simply dummy text of the printing and typesetting industry.<br/>
+          Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,<br/>
+          when an unknown printer took a galley of type and scrambled it to make a type specimen book.<br/>
+          It has survived not only five centuries, but also the leap into electronic typesetting,<br/>
+          remaining essentially unchanged.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="two">
+    <div class="container">
+      <div class="hero">
+        <h2>How we do <span>Experiment width tasty <br/>donuts recipe everytime</span></h2>
+        <p>
+          Lorem Ipsum is simply dummy text of the printing and typesetting industry.<br/>
+          Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,<br/>
+          when an unknown printer took a galley of type and scrambled it to make a type specimen book.<br/>
+          It has survived not only five centuries, but also the leap into electronic typesetting,<br/>
+          remaining essentially unchanged.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="three">
+    <h1>HAPPY DONUT.</h1>
+  </section>
+<script src="./src/ex09.js" type="module"></script>
+</body>
+</html>

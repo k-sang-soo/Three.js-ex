@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>three.js</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./src/style.css" />
+  <style>
+    html,body {
+      overflow-x: hidden;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: rgba(24 ,24 ,24, 1);
+    }
+
+    .wrap {
+      display: grid;
+      place-items: center;
+      height: 100vh;
+    }
+
+    .wrap h1 {
+      font-size: 8rem;
+      text-align: center;
+      text-transform: uppercase;
+      color: white;
+    }
+
+    #canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      outline: none;
+      mix-blend-mode: exclusion;
+    }
+
+    section {
+      height: 100vh;
+    }
+
+    @media screen and (max-width: 640px) {
+      .wrap h1 {
+        font-size: 4rem;
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Feel the Sphere</h1>
+    <canvas id="canvas"></canvas>
+  </div>
+  <section></section>
+  <script src="./src/ex06.js" type="module"></script>
+</body>
+</html>
