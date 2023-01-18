@@ -112,6 +112,17 @@ window.addEventListener('resize', () => {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
 
+function FixedResizeBug(renderer) {
+    const canvas = renderer.domElement;
+    const width = canvas.clientWidth;
+    const height = canvas.clientHeight;
+    const needResize = canvas.width !== width || canvas.height !== height;
+    if (needResize) {
+        renderer.setSize(width, height, false);
+    }
+    return needResize;
+}
+
 /**
  * Camera
  */
@@ -183,6 +194,11 @@ const tick = () => {
 
     // Update Orbital Controls
     // controls.update()
+
+    if (FixedResizeBug(renderer)) {
+        camera.aspect = canvas.clientWidth / canvas.clientHeight;
+        camera.updateProjectionMatrix();
+    }
 
     // Render
     renderer.render(scene, camera);

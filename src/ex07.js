@@ -123,13 +123,23 @@ function canvasResize() {
     renderer.setSize(info.winW, info.winH);
 }
 
+function FixedResizeBug(renderer) {
+    const canvas = renderer.domElement;
+    const width = canvas.clientWidth;
+    const height = canvas.clientHeight;
+    const needResize = canvas.width !== width || canvas.height !== height;
+    if (needResize) {
+        renderer.setSize(width, height, false);
+    }
+    return needResize;
+}
+
 window.addEventListener('resize', () => {
     info.render();
     canvasResize();
 });
 
 function render() {
-    requestAnimationFrame(render);
     // camera.position.x : -6600 ~ 6600
     camera.position.x += (mouseX - camera.position.x) * 0.05;
     camera.position.y += (mouseY * -1 - camera.position.y) * 0.05;
@@ -148,7 +158,13 @@ function render() {
     textMesh.rotation.y = ry;
     textMesh.rotation.z = rz;
 
+    if (FixedResizeBug(renderer)) {
+        camera.aspect = canvas.clientWidth / canvas.clientHeight;
+        camera.updateProjectionMatrix();
+    }
+
     renderer.render(scene, camera);
+    requestAnimationFrame(render);
 }
 
 render();
