@@ -3,6 +3,8 @@ import * as dat from 'dat.gui';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { info } from './info.js';
 
+info.render();
+
 // Debug
 const gui = new dat.GUI();
 
@@ -91,48 +93,10 @@ light3.add(pointLight3.position, 'z').min(-3).max(3).step(0.01);
 light3.add(pointLight3, 'intensity').min(0).max(10).step(0.01);
 
 /**
- * Sizes
- */
-const sizes = {
-    width: window.innerWidth,
-    height: window.innerHeight,
-};
-
-window.addEventListener('resize', () => {
-    // Update sizes
-    sizes.width = window.innerWidth;
-    sizes.height = window.innerHeight;
-
-    // Update camera
-    camera.aspect = sizes.width / sizes.height;
-    camera.updateProjectionMatrix();
-
-    // Update renderer
-    renderer.setSize(sizes.width, sizes.height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-});
-
-function FixedResizeBug(renderer) {
-    const canvas = renderer.domElement;
-    const width = canvas.clientWidth;
-    const height = canvas.clientHeight;
-    const needResize = canvas.width !== width || canvas.height !== height;
-    if (needResize) {
-        renderer.setSize(width, height, false);
-    }
-    return needResize;
-}
-
-/**
  * Camera
  */
 // Base camera
-const camera = new THREE.PerspectiveCamera(
-    75,
-    sizes.width / sizes.height,
-    0.1,
-    100,
-);
+const camera = new THREE.PerspectiveCamera(75, info.winW / info.winH, 0.1, 100);
 camera.position.set(0, 0, 5);
 camera.lookAt(new THREE.Vector3(0, 0, 0));
 scene.add(camera);
@@ -149,7 +113,7 @@ const renderer = new THREE.WebGLRenderer({
     alpha: true, // 아무것도 없는 공간은 투명하게 보이도록 설정
     antialias: true, // 끝 처리를 더 부드럽게 해줌
 });
-renderer.setSize(sizes.width, sizes.height);
+renderer.setSize(info.winW, info.winH);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
 /**
@@ -160,6 +124,12 @@ const clock = new THREE.Clock();
 
 document.addEventListener('mousemove', onDocumentMouseMove);
 window.addEventListener('scroll', onScrollMoveSphere);
+window.addEventListener('resize', () => {
+    info.render();
+    FixedResizeBug(renderer);
+});
+let beforeWinW = window.innerWidth;
+let beforeWinH = window.innerHeight;
 
 let mouseX = 0;
 let mouseY = 0;
@@ -167,8 +137,8 @@ let mouseY = 0;
 let targetX = 0;
 let targetY = 0;
 
-const windowX = sizes.width / 2;
-const windowY = sizes.height / 2;
+const windowX = info.winW / 2;
+const windowY = info.winH / 2;
 
 function onDocumentMouseMove(event) {
     mouseX = event.clientX - windowX;
@@ -177,6 +147,22 @@ function onDocumentMouseMove(event) {
 
 function onScrollMoveSphere(event) {
     sphere.position.y = window.pageYOffset * 0.002;
+}
+
+// 반응형 처리
+function FixedResizeBug(renderer) {
+    const needResize =
+        info.winW !== beforeWinW ||
+        (info.winW !== beforeWinW && info.winH !== beforeWinH);
+    if (needResize) {
+        console.log('resize');
+        camera.aspect = info.winW / info.winH; // 종횡비
+        camera.updateProjectionMatrix();
+        renderer.setSize(info.winW, info.winH);
+    }
+    beforeWinW = info.winW;
+    beforeWinH = info.winH;
+    return needResize;
 }
 
 const tick = () => {
@@ -194,11 +180,6 @@ const tick = () => {
 
     // Update Orbital Controls
     // controls.update()
-
-    if (FixedResizeBug(renderer)) {
-        camera.aspect = canvas.clientWidth / canvas.clientHeight;
-        camera.updateProjectionMatrix();
-    }
 
     // Render
     renderer.render(scene, camera);

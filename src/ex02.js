@@ -25,6 +25,7 @@ const renderer = new THREE.WebGLRenderer({
     antialias: true,
 });
 renderer.setSize(info.winW, info.winH);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
 // 빛
 const pointLight = new THREE.PointLight(0xffffff, 1);
@@ -106,6 +107,7 @@ function canvasResize() {
     camera.aspect = info.winW / info.winH; // 종횡비
     camera.updateProjectionMatrix();
     renderer.setSize(info.winW, info.winH);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 }
 
 window.addEventListener('resize', () => {

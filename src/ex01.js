@@ -27,6 +27,7 @@ const renderer = new THREE.WebGLRenderer({
     antialias: true, // 끝 처리를 더 부드럽게 해줌
 });
 renderer.setSize(info.winW, info.winH);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
 const controls = new OrbitControls(camera, renderer.domElement);
 // 컨트롤 줌 인, 줌 아웃 최소,최댓 값 설정
@@ -152,6 +153,7 @@ function canvasResize() {
     camera.aspect = info.winW / info.winH; // 종횡비
     camera.updateProjectionMatrix(); //카메라에 어떤 파라미터라도 변경되면 이 함수를 써야함
     renderer.setSize(info.winW, info.winH);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 }
 
 window.addEventListener('resize', () => {

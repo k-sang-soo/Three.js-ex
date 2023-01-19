@@ -115,29 +115,28 @@ const mouseFX = {
 
 document.addEventListener('mousemove', mouseFX.onMouseMove, false);
 document.addEventListener('touchmove', mouseFX.onTouchMove, false);
-
-// 반응형 처리
-function canvasResize() {
-    camera.aspect = info.winW / info.winH; // 종횡비
-    camera.updateProjectionMatrix();
-    renderer.setSize(info.winW, info.winH);
-}
-
-function FixedResizeBug(renderer) {
-    const canvas = renderer.domElement;
-    const width = canvas.clientWidth;
-    const height = canvas.clientHeight;
-    const needResize = canvas.width !== width || canvas.height !== height;
-    if (needResize) {
-        renderer.setSize(width, height, false);
-    }
-    return needResize;
-}
-
+let beforeWinW = window.innerWidth;
+let beforeWinH = window.innerHeight;
 window.addEventListener('resize', () => {
     info.render();
-    canvasResize();
+    FixedResizeBug(renderer);
 });
+
+// 반응형 처리
+function FixedResizeBug(renderer) {
+    const needResize =
+        info.winW !== beforeWinW ||
+        (info.winW !== beforeWinW && info.winH !== beforeWinH);
+    if (needResize) {
+        console.log('resize');
+        camera.aspect = info.winW / info.winH; // 종횡비
+        camera.updateProjectionMatrix();
+        renderer.setSize(info.winW, info.winH);
+    }
+    beforeWinW = info.winW;
+    beforeWinH = info.winH;
+    return needResize;
+}
 
 function render() {
     // camera.position.x : -6600 ~ 6600
@@ -157,11 +156,6 @@ function render() {
     textMesh.rotation.x = rx;
     textMesh.rotation.y = ry;
     textMesh.rotation.z = rz;
-
-    if (FixedResizeBug(renderer)) {
-        camera.aspect = canvas.clientWidth / canvas.clientHeight;
-        camera.updateProjectionMatrix();
-    }
 
     renderer.render(scene, camera);
     requestAnimationFrame(render);
