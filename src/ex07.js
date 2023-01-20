@@ -21,8 +21,6 @@ camera.position.x = farDist * -2;
 camera.position.z = 500;
 scene.add(camera);
 
-console.log('farDist * -2', farDist * -2);
-
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas,
     antialias: true,
@@ -128,7 +126,6 @@ function FixedResizeBug(renderer) {
         info.winW !== beforeWinW ||
         (info.winW !== beforeWinW && info.winH !== beforeWinH);
     if (needResize) {
-        console.log('resize');
         camera.aspect = info.winW / info.winH; // 종횡비
         camera.updateProjectionMatrix();
         renderer.setSize(info.winW, info.winH);

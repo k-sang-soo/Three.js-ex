@@ -155,7 +155,6 @@ function FixedResizeBug(renderer) {
         info.winW !== beforeWinW ||
         (info.winW !== beforeWinW && info.winH !== beforeWinH);
     if (needResize) {
-        console.log('resize');
         camera.aspect = info.winW / info.winH; // 종횡비
         camera.updateProjectionMatrix();
         renderer.setSize(info.winW, info.winH);
