@@ -123,9 +123,11 @@ function meshRender() {
     if (info.winW > 640) {
         radius = 6.5;
         positionX = 1.5;
+        directionaLight.position.set(1, 2, 0);
     } else {
         radius = 4.5;
         positionX = 0;
+        directionaLight.position.set(0, 1.5, 0);
     }
     donut.scale.set(radius, radius, radius);
     donut.position.x = positionX;
