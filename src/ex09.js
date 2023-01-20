@@ -3,7 +3,6 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import gsap from 'gsap';
 import { info } from './info.js';
 
-console.log('gsap', gsap);
 info.render();
 
 /**
@@ -33,6 +32,7 @@ scene.add(camera);
  */
 const overlayGeometry = new THREE.PlaneGeometry(2, 2, 1, 1);
 const overlayMaterial = new THREE.ShaderMaterial({
+    //http://blog.302chanwoo.com/2016/08/shadermaterial1/ 참조
     vertexShader: `
         void main() {
             gl_Position = vec4(position, 1.0);
@@ -72,11 +72,6 @@ const loadingManager = new THREE.LoadingManager(
         }, 500);
     },
     (itemUrl, itemsLoaded, itemsTotal) => {
-        console.log('loadingBar', loadingBar);
-        console.log('progress');
-        console.log('itemUrl', itemUrl);
-        console.log('itemsLoaded', itemsLoaded);
-        console.log('itemsTotal', itemsTotal);
         const propgressRatio = itemsLoaded / itemsTotal;
         loadingBar.style.transform = `scaleX(${propgressRatio})`;
     },
@@ -116,14 +111,26 @@ const gltfLoader = new GLTFLoader(loadingManager);
 gltfLoader.load('../static/gltf/donut/scene.gltf', (gltf) => {
     donut = gltf.scene;
 
-    donut.position.x = 1.5;
     donut.rotation.x = Math.PI * 0.2;
     donut.rotation.z = Math.PI * 0.15;
 
-    const radius = 8.5;
-    donut.scale.set(radius, radius, radius);
-    scene.add(donut);
+    meshRender();
 });
+
+function meshRender() {
+    let radius;
+    let positionX;
+    if (info.winW > 640) {
+        radius = 6.5;
+        positionX = 1.5;
+    } else {
+        radius = 4.5;
+        positionX = 0;
+    }
+    donut.scale.set(radius, radius, radius);
+    donut.position.x = positionX;
+    scene.add(donut);
+}
 
 /**
  * Scroll
@@ -134,32 +141,50 @@ const scrollInfo = {
         top: [],
         bottom: [],
     },
+    ani: [],
     render() {
         this.sec = document.querySelectorAll('section');
-        console.log('this.sec', this.sec);
         this.sec.forEach((el) => {
             const top = Math.floor(info.winY + el.getBoundingClientRect().top);
             const bottom = Math.floor(top + el.getBoundingClientRect().height);
             this.position.top.push(top);
             this.position.bottom.push(bottom);
         });
+        this.ani = [];
+        if (info.winW > 640) {
+            console.log('??');
+            this.ani.push(
+                {
+                    rotationZ: 0.45,
+                    positionX: 1.5,
+                },
+                {
+                    rotationZ: -0.45,
+                    positionX: -1.5,
+                },
+                {
+                    rotationZ: 0.0314,
+                    positionX: 0,
+                },
+            );
+        } else {
+            this.ani.push(
+                {
+                    rotationZ: 0.45,
+                    positionX: 0,
+                },
+                {
+                    rotationZ: -0.45,
+                    positionX: 0,
+                },
+                {
+                    rotationZ: 0.0314,
+                    positionX: 0,
+                },
+            );
+        }
     },
 };
-
-const transformDonut = [
-    {
-        rotationZ: 0.45,
-        positionX: 1.5,
-    },
-    {
-        rotationZ: -0.45,
-        positionX: -1.5,
-    },
-    {
-        rotationZ: 0.0314,
-        positionX: 0,
-    },
-];
 
 scrollInfo.render();
 
@@ -174,18 +199,17 @@ function scrollAni(winY) {
             winY >= scrollInfo.position.top[idx] &&
             winY < scrollInfo.position.bottom[idx] - info.winH / 2
         ) {
-            console.log('idx', idx);
             if (!!donut) {
                 gsap.to(donut.rotation, {
                     duration: 1.5,
                     ease: 'power2.inOut',
-                    z: transformDonut[idx].rotationZ,
+                    z: scrollInfo.ani[idx].rotationZ,
                 });
 
                 gsap.to(donut.position, {
                     duration: 1.5,
                     ease: 'power2.inOut',
-                    x: transformDonut[idx].positionX,
+                    x: scrollInfo.ani[idx].positionX,
                 });
             }
         }
@@ -219,6 +243,7 @@ window.addEventListener('resize', () => {
     canvasResize();
     scrollInfo.render();
     scrollAni(info.winY);
+    meshRender();
 });
 
 /**
