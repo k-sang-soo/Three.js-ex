@@ -3,7 +3,6 @@ const path = require('path');
 module.exports = {
     mode: 'production',
     entry: {
-        index: './src/index.js',
         ex01: './src/ex01.js',
         ex02: './src/ex02.js',
         ex03: './src/ex03.js',
